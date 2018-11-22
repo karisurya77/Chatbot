@@ -1,0 +1,60 @@
+<html>
+ <head>
+    <title>Flask Intro - login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <!--   <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="http://code.jquery.com/jquery 2.1.4.min.js"></script>  -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+ </head>
+ <body>
+	<textarea id= "chatbox" rows="10" cols="50" style="text-align:left;">"Welcome to BOT World "</textarea> <br><br>
+	  Enter your question:<br>
+	  <input type="text" name="question" value="Hi"><br>
+	  <input id="submitbutton" type="submit" value="Submit"> <br><br>
+	
+
+
+    <!----------------------------------->
+
+    <script type="text/javascript",method='POST'>
+
+    function runPyScript(input){
+		console.log(submitbutton.value)
+		console.log(input);
+        var jqXHR = $.ajax({
+            dataType: 'jsonp', 
+            type: "POST",
+			url: "http://localhost:5000/login",
+            async: false,
+            data: {'mydata':JSON.stringify(input)},
+			contentType: "application/json:charset=UTF-8",
+			dataType: "jsonp",
+			success: function (data) {
+				$('#chatbox').append("\n"+ data );
+				console.log(data);},
+			error: function (jqXHR, text, errorThrown) {
+				  console.log(jqXHR + " " + text + " " + errorThrown);}
+				  })
+        return jqXHR.value
+
+    }
+
+	$(document).ready(function(){
+		$("#submitbutton").click(function(){
+			datatosend = $("input:text").val();
+			$('#chatbox').append("\n"+ "User Question: " + datatosend );
+			$('#chatbox').stop ().animate ({
+				scrollTop: $('#chatbox')[0].scrollHeight
+				});
+
+			console.log("datatosend :"+datatosend);
+			result = runPyScript(datatosend);
+			console.log('Got back ' + result);
+		});
+	});
+
+</script>
+
+</body>
+</html>
